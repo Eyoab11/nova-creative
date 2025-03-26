@@ -1,9 +1,9 @@
 import clsx from "clsx";
 import gsap from "gsap";
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom"; // Import Link for navigation
+import { Link, useLocation } from "react-router-dom"; // Added useLocation
 
-const navItems = ["WORK", "ABOUT", "SERVICES", "PLANS", "CONTACT"];
+const navItems = ["HOME", "ABOUT", "SERVICES", "PROJECTS", "CONTACT"];
 
 const NavBar = () => {
   // State for toggling audio and visual indicator
@@ -15,6 +15,9 @@ const NavBar = () => {
   // Refs for audio and navigation container
   const audioElementRef = useRef(null);
   const navContainerRef = useRef(null);
+
+  // Get current location for navigation tracking
+  const location = useLocation();
 
   // Toggle audio and visual indicator
   const toggleAudioIndicator = () => {
@@ -43,6 +46,25 @@ const NavBar = () => {
       duration: 0.2,
     });
   }, []);
+
+  // Scroll to middle of page after navigation
+  useEffect(() => {
+    const scrollToMiddle = () => {
+      const pageHeight = document.documentElement.scrollHeight;
+      const viewportHeight = window.innerHeight;
+      const middlePosition = (pageHeight - viewportHeight) / 2;
+
+      window.scrollTo({
+        top: middlePosition,
+        behavior: "smooth",
+      });
+    };
+
+    // Only scroll if we're navigating to a new page (not just opening/closing menu)
+    if (location.pathname !== "/" || location.hash) {
+      scrollToMiddle();
+    }
+  }, [location]); // Trigger on location change
 
   return (
     <>
@@ -123,14 +145,14 @@ const NavBar = () => {
         </header>
       </div>
 
-      {/* Full-page navigation when menu is open */}
+      {/* Full-page navigation */}
       {isMenuOpen && (
         <div className="fixed inset-0 z-40 bg-gray-100 flex items-center justify-start p-10">
           <div className="flex flex-col gap-4">
             {navItems.map((item, index) => (
               <Link
                 key={index}
-                to={item === "ABOUT" ? "/about" : `/#${item.toLowerCase()}`} // Navigate to AboutPage for "ABOUT"
+                to={item === "ABOUT" ? "/about" : `/#${item.toLowerCase()}`}
                 className="text-6xl font-bold text-black uppercase hover:text-gray-600 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >

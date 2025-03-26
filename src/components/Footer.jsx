@@ -1,40 +1,47 @@
-import { FaDiscord, FaTwitter, FaYoutube, FaMedium } from "react-icons/fa";
+import { FaTwitter, FaYoutube, FaMedium, FaEnvelope, FaPhone } from "react-icons/fa";
 
 const socialLinks = [
-  { href: "https://discord.com", icon: <FaDiscord /> },
   { href: "https://twitter.com", icon: <FaTwitter /> },
   { href: "https://youtube.com", icon: <FaYoutube /> },
   { href: "https://medium.com", icon: <FaMedium /> },
+  { href: "mailto:contact@nova.com", icon: <FaEnvelope /> },
 ];
 
 const Footer = () => {
   return (
-    <footer className="w-screen bg-[#5542ff] py-4 text-black">
-      <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 md:flex-row">
-        <p className="text-center text-sm font-light md:text-left">
-          ©Nova 2024. All rights reserved
-        </p>
-
-        <div className="flex justify-center gap-4  md:justify-start">
-          {socialLinks.map((link, index) => (
-            <a
-              key={index}
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-black transition-colors duration-500 ease-in-out hover:text-white"
-            >
-              {link.icon}
-            </a>
-          ))}
+    <footer className="w-screen bg-transparent py-8 text-black">
+      <div className="container mx-auto flex flex-row items-center justify-between px-6">
+        <div className="flex items-center gap-6">
+          <p className="text-lg font-light tracking-wide">
+            ©Nova 2024. All rights reserved
+          </p>
+          <div className="flex items-center gap-2">
+            <FaPhone className="text-xl" />
+            <p className="text-lg font-light tracking-wide">+1 (555) 123-4567</p>
+          </div>
         </div>
 
-        <a
-          href="#privacy-policy"
-          className="text-center text-sm font-light hover:underline md:text-right"
-        >
-          Privacy Policy
-        </a>
+        <div className="flex items-center gap-8">
+          <div className="flex gap-6">
+            {socialLinks.map((link, index) => (
+              <a
+                key={index}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-black transition-transform duration-300 ease-in-out hover:scale-110"
+              >
+                <span className="text-2xl">{link.icon}</span>
+              </a>
+            ))}
+          </div>
+          <a
+            href="#privacy-policy"
+            className="text-lg font-light tracking-wide transition-transform duration-300 ease-in-out hover:scale-105 hover:underline"
+          >
+            Privacy Policy
+          </a>
+        </div>
       </div>
     </footer>
   );

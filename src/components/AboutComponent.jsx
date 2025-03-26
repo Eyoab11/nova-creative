@@ -1,6 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+// Import the images at the top of the file
+
+import logo4 from "../../public/img/logo4.svg";
+import logo3 from "../../public/img/logo3.svg";
+import logo2 from "../../public/img/logo2.svg";
+import logo1 from "../../public/img/logo1.svg";
+
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -11,7 +18,7 @@ const AboutComponent = () => {
   const cardRightRefs = useRef([]);
   const teamCardRefs = useRef([]); // Ref for team cards
   const marqueeRef = useRef(null); // Ref for the marquee container
-
+  const marqueeSentenceRef = useRef(null);
   // Animation for the h1 in the second section (slide from left to middle)
   useEffect(() => {
     const heading = headingRef.current;
@@ -89,6 +96,33 @@ const AboutComponent = () => {
       );
     });
   }, []);
+
+  // Marquee animation for the sentence (Ninth Section - Left to Right)
+useEffect(() => {
+  const marquee = marqueeSentenceRef.current;
+  if (!marquee) return;
+
+  // Calculate the total width of the content
+  const totalWidth = marquee.scrollWidth;
+
+  // GSAP animation to move the sentence to the right (left to right)
+  gsap.fromTo(
+    marquee,
+    { x: -totalWidth / 3 }, // Start off-screen to the left (adjusted for 3 duplicates)
+    {
+      x: 0, // Move to the right edge
+      duration: 15, // Adjust duration for desired speed
+      ease: "none",
+      repeat: -1, // Infinite loop
+      modifiers: {
+        x: (x) => {
+          const offset = parseFloat(x) % (totalWidth / 3);
+          return `${offset - totalWidth / 3}px`; // Adjust for seamless left-to-right loop
+        },
+      },
+    }
+  );
+}, []);
 
   // Animation for team cards (fade in and scale up)
   useEffect(() => {
@@ -181,14 +215,14 @@ const AboutComponent = () => {
 
   // Sample company logos data
   const companyLogos = [
-    { name: "Logopsum", image: "/img/logopsum.png" },
-    { name: "Lunyr", image: "/img/lunyr.png" },
-    { name: "Power Module", image: "/img/power-module.png" },
-    { name: "Loco", image: "/img/loco.png" },
-    { name: "Logopsum", image: "/img/logopsum.png" }, // Duplicate for more logos
-    { name: "Lunyr", image: "/img/lunyr.png" },
-    { name: "Power Module", image: "/img/power-module.png" },
-    { name: "Loco", image: "/img/loco.png" },
+    { name: "Logopsum", image: logo1 },
+    { name: "Lunyr", image: logo2 },
+    { name: "Power Module", image: logo3 },
+    { name: "Loco", image: logo4 },
+    { name: "Logopsum", image: logo1 }, // Duplicate for more logos
+    { name: "Lunyr", image: logo2 },
+    { name: "Power Module", image: logo3 },
+    { name: "Loco", image: logo4 },
   ];
 
   // Filter team members based on the active filter
@@ -460,36 +494,60 @@ const AboutComponent = () => {
       </section>
 
       {/* Seventh Section (We've Worked For...) */}
-      <section className="w-screen py-20 bg-white">
-        <div className="container mx-auto px-4">
-          {/* Title */}
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-black text-center mb-12">
-            We've worked for...
-          </h2>
+<section className="w-screen py-20 bg-gray-20">
+  <div className="w-full mx-auto px-4">
+    {/* Title */}
+    <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-black text-center mb-12">
+      We've worked for...
+    </h2>
 
-          {/* Marquee Container */}
-          <div className="overflow-hidden">
-            <div
-              ref={marqueeRef}
-              className="flex flex-row space-x-8 whitespace-nowrap"
-            >
-              {companyLogos.map((company, index) => (
-                <div
-                  key={index}
-                  className="flex-shrink-0 bg-gray-100 rounded-lg p-6 flex items-center justify-center"
-                >
-                  <img
-                    src={company.image}
-                    alt={company.name}
-                    className="h-12 sm:h-16 md:h-20 object-contain"
-                    loading="lazy"
-                  />
-                </div>
-              ))}
-            </div>
+    {/* Marquee Container */}
+    <div className="overflow-hidden">
+      <div
+        ref={marqueeRef}
+        className="flex flex-row space-x-1 whitespace-nowrap"
+      >
+        {companyLogos.map((company, index) => (
+          <div
+            key={index}
+            className="flex-shrink-0 bg-gray-200 rounded-lg p-2 w-96 h-96 flex items-center justify-center"
+          >
+            <img
+              src={company.image}
+              alt={company.name}
+              className="h-24 sm:h-28 md:h-32 object-contain"
+              loading="lazy"
+            />
           </div>
-        </div>
-      </section>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+{/* Ninth Section (Rotating Sentence - Left to Right) */}
+<section className="w-screen py-20 bg-gray-20 mt-4">
+  <div className="w-full mx-auto px-4">
+    {/* Marquee Container */}
+    <div className="overflow-hidden">
+      <div
+        ref={marqueeSentenceRef}
+        className="flex flex-row space-x-8 whitespace-nowrap"
+      >
+        {/* Duplicate the sentence multiple times for seamless looping */}
+        <h2 className="text-9xl sm:text-[10rem] md:text-[12rem] font-bold text-black uppercase">
+          INSPIRE YOUR FUTURE!
+        </h2>
+        <h2 className="text-9xl sm:text-[10rem] md:text-[12rem] font-bold text-black uppercase">
+          INSPIRE YOUR FUTURE!
+        </h2>
+        <h2 className="text-9xl sm:text-[10rem] md:text-[12rem] font-bold text-black uppercase">
+          INSPIRE YOUR FUTURE!
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+
     </div>
   );
 };
